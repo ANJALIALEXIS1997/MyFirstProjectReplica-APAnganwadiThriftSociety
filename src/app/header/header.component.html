@@ -1,0 +1,22 @@
+<!-- <div class= “header-image”> -->
+<div class="col-md-12 col-sm-12 col-xs-12" style="font-family: Gabriola;padding:2%;background-color: #6D6968;text-align: center;color: aliceblue;font-size: 180%;font-weight: bold;">
+     AP ANGANWADI THRIFT SOCIETY 
+     <!-- this function is from login-verify.service.ts file and ls is the name  of the service ..public ls:LoginVerifyService -->
+<span *ngIf="ls.get_login_status()=='true'" style="float:right">
+    Welcome {{ls.get_admin_name()}} &nbsp;&nbsp;&nbsp;
+    <button class="btn btn-danger" (click)="logout_main()">Logout</button>
+</span>
+<!-- this function is from login-verify.service.ts file -->
+<span *ngIf="ls.get_user_role()=='Admin'" style="display:block">
+    <a routerLink="/admin/payment_confirm" class="btn btn-success" style="margin:2px" *ngIf="ls.get_payment_conf_admin()==true">Payment Confirm</a>
+    <a routerLink="/admin/dist_wise_confirm" class="btn btn-success" style="margin:2px" *ngIf="ls.get_dist_wise_conf_admin()==true">Dist-Wise Confirm</a>
+    <a routerLink="/admin/gl_generation" class="btn btn-success" style="margin:2px" *ngIf="ls.get_gl_gen_admin()==true">GL Generation</a>
+    <a routerLink="/admin/download_details" class="btn btn-success" style="margin:2px" *ngIf="ls.get_download_detail_admin()==true">Download Details</a>
+    <a routerLink="/admin/admin_management" class="btn btn-success" style="margin:2px" *ngIf="ls.get_admin_management_admin()==true">Admin Management</a>
+
+</span>
+</div>
+
+
+
+<!-- </div> -->

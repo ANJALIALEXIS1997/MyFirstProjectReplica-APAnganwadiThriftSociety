@@ -1,0 +1,88 @@
+<div class="row my_row" >
+    <!-- style="background-color:#31572C;" -->
+    <!-- <div class="shadow-lg p-3 mb-5 bg-white rounded"></div> -->
+    <!-- <img src="assets/images/fantasy.jpg" class="img img-responsive img-thumbnail"  /> -->
+<div class="col-md-6 col-sm-6 col-xs-6" style="text-align:center">
+    <br><button class="btn btn-sm btn-link"
+        style="font-size: 16px; margin-top: 10px;display:block;color:white;width:75%;margin:auto;background-color: #6C6F73;" routerLink="/login">Are
+        you a Member or Want to become a Member? Click ... </button>
+
+    <img src="assets/images/image.gif" class="img img-responsive img-thumbnail" style="width:75%;margin:2%"  />
+</div>
+<!-- <div class="container"> -->
+<div class="col-md-4 col-sm-4 col-xs-4" style = "margin-inline-start: inherit;box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px; margin-top:80px; margin-bottom:220px;margin-top:10%">
+    <form #admin="ngForm" style="width:90%;margin:auto;padding:2%">
+        <!-- <div class="col-md-12 col-sm-12 col-xs-12"> -->
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" style="padding:5px;">Mobile No.</label>
+                    <input type="text" class="form-control" ngModel name="mobileno" placeholder="Mobile No.">
+                </div>
+            </div>
+        <!-- </div> -->
+        <div class="row" style="margin-bottom: 10px;" >
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <button class="btn  btn-xs" style="background-color:#6D6968;min-height:  34px; width: 100%; font-size: 16px;" (click)="continue_func(admin)"[disabled]="continue==true" >
+                    <span class="col-md-7 text-right" style="color:white">Continue</span>
+                    <span class="col-md-5 text-left" style="margin-top: 0;color:white;">></span>
+                </button>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <label class="control-label">Password</label>
+                <input type="password" class="form-control" placeholder="password" name="password" ngModel [disabled]="continue==false">
+            </div>
+            </div>
+            <div class="row" style="margin-bottom: 10px; margin-top: 15px;">
+                <div class="col-md-12 col-sm-12 col-xs-12" >
+                    <button class="btn btn-xs" *ngIf="continue==true"style="background-color:#6D6968;min-height:  34px; width: 100%; font-size: 16px;" (click)="admin_login(admin)">
+                        <span class="col-md-7 text-right" style="color:white">Login</span>
+                        <span class="col-md-5 text-left" style="margin-top: 0;color:white;">></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-12 col-sm-12 col-xs-12 text-center" style="padding-left: 5px;">
+                    <h6><a  *ngIf="continue==true"  (click)="open(mymodal)"
+                    >Forgot Password / Reset Password</a></h6>
+                </div>
+            </div>  
+    </form>
+</div>
+<!-- </div> -->
+</div>
+   
+<ng-template #mymodal let-modal [ngStyle] ="{ 'display' : (reset_done==true)? 'none' : '' }">
+  <div class="modal-header" style="font-family: Gabriola;background-color: #6D6968;">
+    <h4 class="modal-title" id="modal-basic-title" style="color:white">Reset Password</h4>
+    <button type="button" class="close" aria-label="Close"  #closebutton data-dismiss="modal" (click)="modal.dismiss('Cross click')" id="closer">
+      <span aria-hidden="true" style="color: white;">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    
+    <div class="col-md-8 col-sm-12 col-xs-12" style="float:left">
+        <label class="control-label">OTP : {{otp}}</label>
+        <input id="memb_otp" class="form-control" type="text" [(ngModel)]="entered_otp" (input)="verify_otp()">
+    </div>
+    <div style="float:left; margin:30px;background-color:#6D6968; ">
+        <button type="button" class="btn " style="color:white" (click)="reset_otp()">OTP</button>
+    </div>
+  </div>
+  <div class="col-md-8 col-sm-12 col-xs-12" style="float:left" *ngIf="correct_otp==true">
+    <label class="control-label">New Password</label>
+    <input id="memb_otp" class="form-control" type="text" [(ngModel)]="new_pwd" >
+</div>
+<div class="col-md-8 col-sm-12 col-xs-12" style="float:left" *ngIf="correct_otp==true">
+    <label class="control-label">Confirm Password</label>
+    <input id="memb_otp" class="form-control" type="password" [(ngModel)]="conf_pwd">
+</div>
+<div class="col-md-4 col-sm-4 col-xs-4" style="float:left; margin:30px ;background-color:#6D6968;">
+    <button type="button" class="btn " style="color:white" (click)="reset_pwd()" *ngIf="correct_otp==true">Reset Password</button>
+</div>
+  <div class="modal-footer" style="font-family: Gabriola;background-color: #6D6968;">
+    <button type="button"  class="btn btn-outline-dark" style="color:black;background-color:white" (click)="modal.close('Save click')">Ok</button>
+  </div>
+</ng-template>
+<!-- when pop up box appears then we see an otp generated  and when we click on otp button we can change the otp number and enter in the text box. When we enter this otp then new password and confirm password boxes appears and when we enter same password in both the boxes and click on reset password button then the new password was updated.  -->

@@ -1,0 +1,42 @@
+<div class="container" >
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+<!-- <span class="border border-light"></span> -->
+<div class="create-option-thumb-img">
+    
+    <img src="assets/images/fantasy.jpg" class="img img-responsive img-thumbnail"/>
+ 
+<div class="row my_row;" *ngIf="isLoggedIn==false" > <!--is the person logged in?? No so, boolean value= false -->
+    <!-- <img src="assets/images/fantasy.jpg" class="img img-responsive img-thumbnail"/> -->
+    <!-- style="border: 0.5rem solid rgb(255,255,255);" -->
+    <div class="col-md-12 col-sm-12 col-xs-12" >
+        <h3 style="text-align:center;margin:5px;font-family: Gabriola , Helvetica, sans-serif;font-weight: bold;margin-top:5px;padding: 10px;">LOGIN MEMBERSHIP FORM</h3>
+    <div class="col-md-3 col-sm-12 col-xs-12" style="float:left">
+    <label class="control-label">Aadhar No:</label>
+    <input id="memb_aadhno" class="form-control" type="text" [(ngModel)]="applicant_aadhno" (input)="validate_aadhar_funda()">
+    <!--(input) event assigned above is for validation and the botton div tag is for validation  -->
+    <div class="col-md-12 alert alert-danger" *ngIf="validate_aadhar==true">Error in aadhar no.</div>
+</div>
+<div class="col-md-3 col-sm-12 col-xs-12" style="float:left">
+    <label class="control-label">Mobile No.</label>
+    <input id="memb_mobno" class="form-control" type="text" [(ngModel)]="applicant_mobno" (input)="validate_mobno_funda()">
+    <div class="col-md-12 alert alert-danger" *ngIf="validate_mobno==true">Error in mobile no.</div>
+</div>
+<div style="float:left; margin:30px;background-color:#6D6968;">
+    <button type="button" class="btn" style="color:white" (click)="generate_otp()">Send OTP</button>
+  </div>
+<div class="col-md-2 col-sm-12 col-xs-12" style="float:left">
+    <label class="control-label">OTP : {{otp}}</label>
+    <input id="memb_otp" class="form-control" type="text" [(ngModel)]="entered_otp" (input)="validate_otp_funda()">
+    <div class="col-md-12 alert alert-danger" *ngIf="validate_otp==true">Error in otp no.</div>
+</div>
+<div style="float:left;margin:30px;background-color:#6D6968;">
+    <button type="button" class="btn" style="color:white" (click)="verify_otp()">Verify OTP</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row well" *ngIf="isLoggedIn==true">  <!--here already the person is logged in and from that form he want to logout. So, bollean value=true-->
+    Welcome User <button class="btn btn-primary" (click)="logout()">Logout</button>
+</div>

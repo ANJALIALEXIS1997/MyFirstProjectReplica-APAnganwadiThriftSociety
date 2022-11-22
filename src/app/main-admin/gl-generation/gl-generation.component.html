@@ -1,0 +1,49 @@
+<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+    <h3 style="margin-top: 20p;font-family: Gabriola;font-weight: bold;">GL No. Generation</h3>
+</div>
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+<table class="table table-striped">
+    <tr style="background-color: #6D6968;color: white;">
+        <td>Aadhar No.</td>
+        <td>Name</td>
+        <td>Mobile No.</td>
+        <td>District</td>
+        <td>Project</td>
+        <td>Sector</td>
+        <td>GL No.</td>
+    </tr>
+    <!-- data-label is used for mobile responsive and the value assigned in each is the name assigned in td tags above -->
+    <tr *ngFor="let a of glno_generate_retrieve_array">
+        <td data-label="Aadhar No.">
+            <span>{{a.aadharno}}</span>
+        </td>
+        <td data-label="Name">
+            <span>{{a.empname}}</span>
+        </td>
+        <td data-label="Mobile No.">
+            <span>{{a.phoneno}}</span>
+        </td>
+        <td data-label="District">
+            <span>{{a.districtcode}}-{{a.district_desc}}</span>
+        </td>
+        <td data-label="Project">
+            <span>{{a.projectcode}}-{{a.project_desc}}</span>
+        </td>
+        <td data-label="Sector">
+            <span>{{a.sectorcode}}-{{a.sector_desc}}</span>
+        </td>
+        <td data-label="GL No.">
+            <button *ngIf="a.glno=='N'" class="btn btn-primary" (click)="glno_confirm(a.aadharno,a.phoneno)">Generate GL</button>
+            <span *ngIf="a.glno!='N'" style="font-weight:bold;">{{a.glno}}</span>
+        </td>
+    </tr>
+</table>
+</div>
+
+
+
+
+
+
+
+

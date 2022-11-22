@@ -1,0 +1,7 @@
+div{float:left}
+#custom1{width:40%;margin-left: 65%;display:inline}
+.modal-backdrop.your-backdrop-class {
+    z-index: 1060!important;
+  }
+  .row{clear:both!important;display:block!important}
+  form{background-color:white;height:2000px;}

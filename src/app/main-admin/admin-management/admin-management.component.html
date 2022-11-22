@@ -1,0 +1,73 @@
+<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+    <h3 style="margin-top: 20p;font-family: Gabriola;font-weight: bold;">Admin Management</h3>
+</div>
+
+<div class="col-md-12 col-sm-12 col-xs-12"style="border: grey thin solid; padding: 5px; box-shadow: grey 5px 5px 5px; margin-bottom: 10px;">
+    <h4 style="font-family: Gabriola;font-weight: bold;">General Admin Management</h4>
+    <div class="col-md-12 col-sm-12 col-xs-12"style="border-bottom: grey thin dotted; margin-bottom: 5px; padding-bottom: 10px;">
+        <div class="shadow-lg p-3 mb-5 bg-white rounded">
+            <table class="table table-bordered">
+                <tr style="background-color: #6D6968;color: white;">
+                    <td>Name</td>
+                    <td>Mobile No.</td>
+                    <td>Email Id</td>
+                    <td>#</td>
+                </tr>
+                <!-- data-label is used for mobile responsive and the value assigned in each is the name assigned in td tags above -->
+                <tr *ngFor="let a of actual_admin">
+                    <td data-label="Name">{{a.name}}</td>
+                    <td data-label="Mobile No.">{{a.mobile_no}}</td>
+                    <td data-label="Email Id">{{a.email_id}}</td>
+                    <td data-label="#">
+
+                        <h4 style="padding-left: 15px;">Roles:&nbsp;<span style="font-size: 14px;">(Select at least one
+                                Role below)</span></h4>
+                                <!-- !=-1 means it is present means give a tick -->
+                        <input type="checkbox" [checked]="a.role_list.indexOf('HQ_PAYMENT_CONFIRMATION')!=-1"
+                            (click)="set_role(a.mobile_no,'HQ_PAYMENT_CONFIRMATION','01')"
+                            [disabled]="a.registered=='N'">HQ_PAYMENT_CONFIRMATION<br>
+                        <input type="checkbox" [checked]="a.role_list.indexOf('ALL_GL_GENERATION')!=-1"
+                            (click)="set_role(a.mobile_no,'ALL_GL_GENERATION','02')"
+                            [disabled]="a.registered=='N'">ALL_GL_GENERATION<br>
+                        <input type="checkbox" [checked]="a.role_list.indexOf('DISTRICT_WISE_CONFIRMATION')!=-1"
+                            (click)="set_role(a.mobile_no,'DISTRICT_WISE_CONFIRMATION','03')"
+                            [disabled]="a.registered=='N'">DISTRICT_WISE_CONFIRMATION<br>
+                        <!--- <div class="col-md-6 col-sm-6 col-xs-6">-->
+
+                        <button class="btn btn-sm btn-success" (click)="save_change()" *ngIf="a.registered=='Y'">Save
+                            Changes</button>
+                        <!-- </div>
+                    <div class="col-md-3 col-sm-6 col-xs-6">-->
+                        &nbsp; <button class="btn btn-sm btn-danger text-center" (click)="delete_admin(a.mobile_no)"
+                            *ngIf="a.registered=='Y'">Delete Admin</button>
+                        <button class="btn btn-sm btn-danger text-center" (click)="restore_admin(a.mobile_no)"
+                            *ngIf="a.registered=='N'">Restore Admin</button>
+                        <!--</div>-->
+                    </td>
+                </tr>
+
+
+            </table>
+            <button class="btn btn-primary" (click)="set_add()" *ngIf="show_add==false">Add New Member</button>
+            <button class="btn btn-danger" (click)="set_add()" *ngIf="show_add==true" style="float:right">X</button>
+
+            <div class="col-md-6 col-sm-12 col-xs-12" *ngIf="show_add==true">
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <input type="text" class="form-control" [(ngModel)]="name" placeholder="admin name">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <input type="text" class="form-control" [(ngModel)]="mobile" placeholder="admin mobile no">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <input type="text" class="form-control" [(ngModel)]="id" placeholder="admin email id">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                <button class="btn btn-sm btn-primary" style="width: 100%; margin: 10px 0 10px 0;"
+                    (click)="save_new_admin()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

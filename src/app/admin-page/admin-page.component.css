@@ -1,0 +1,5 @@
+ /* this is for pop up box  */
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;   
+  }
+ 

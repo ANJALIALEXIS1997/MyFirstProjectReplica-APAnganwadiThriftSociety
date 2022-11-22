@@ -1,0 +1,633 @@
+<div class="shadow-lg p-3 mb-5 bg-white rounded">
+    <form [formGroup]="membershipForm" (ngSubmit)="add_item()" *ngIf="isLoggedIn==true" id="content" #content
+        style="width: 100%; height: 100% !important;">
+        <h2 style="font-family: Gabriola; font-weight: bold;text-align: center;">
+            Membership Form
+        </h2>
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Aadhar No:</label>
+                    <!-- id is not required here, but safe side we assigned in all input tags -->
+                    <!-- readonly is an attribute. It disables the field without being modified.-->
+                    <input id="memb_aadhno" class="form-control" type="text" formControlName="applicant_aadhno"
+                        readonly>
+                    <!-- *ngIf is called as structural directive as * is assigned .It is a boolean -->
+                    <div *ngIf="submitted && membershipForm.controls['applicant_aadhno'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_aadhno'].errors['required']">aadhar number is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_aadhno'].errors['pattern']">aadhar number is
+                            invalid
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Mobile No.</label>
+                    <input id="memb_mobno" class="form-control" type="text" formControlName="applicant_mobno" readonly
+                        maxlength="10">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_mobno'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_mobno'].errors['required']">mobile no is required
+                        </div>
+                        <div *ngIf="membershipForm.controls['applicant_mobno'].errors['pattern']">mobile no is invalid
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12, col-xs-12">
+                    <label for="name" class="control-label">Name of the Applicant in Full Shri/Smt/Kum : </label>
+                    <input id="memb_name" class="form-control" type="text" formControlName="applicant_name"
+                        minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_name'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_name'].errors['required']">applicant name is
+                            required
+                        </div>
+                        <div *ngIf="membershipForm.controls['applicant_name'].errors['minlength']">applicant name must
+                            be at
+                            least 3 characters</div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Date of Birth:</label>
+                    <!--  change event is fired for <input>,<select>, and <textarea> elements -->
+                    <!-- syntax: <input (change)="function($e)" -->
+                    <input id="memb_dob" class="form-control" type="date" formControlName="applicant_dob"
+                        (input)="date_of_birth_logic($event)" [max]="current_date_str">
+                    <!-- input event is for age display and max property is for validation to calendar to show till date in calendar -->
+                    <div *ngIf="submitted && membershipForm.controls['applicant_dob'].errors" class="alert alert-danger"
+                        style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_dob'].errors['required']">applicant dob is
+                            required
+                        </div>
+                    </div>
+</div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <label>Age in years:</label>
+                        <input id="memb_age" class="form-control" type="text" formControlName="applicant_age"
+                            [(ngModel)]="applicant_age" readonly>
+                        <!-- readonly attribute is a boolean and it disables the field if it is true. -->
+                    </div>
+               
+                
+                    <div class="col-md-12 col-sm-12 col-xs-12"> <label class="control-label">Father's / Husband's
+                            Name:</label>
+                        <input id="memb_f_h_name" class="form-control" type="text" formControlName="applicant_f_h_name"
+                            minlength="3">
+                        <div *ngIf="submitted && membershipForm.controls['applicant_f_h_name'].errors"
+                            class="alert alert-danger" style="width:100%">
+                            <div *ngIf="membershipForm.controls['applicant_f_h_name'].errors['required']">
+                                father's/husband's
+                                name is required</div>
+                            <div *ngIf="membershipForm.controls['applicant_f_h_name'].errors['minlength']">
+                                father's/husband's
+                                name must be at least 3 characters</div>
+                        </div>
+                    </div>
+                
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-12 col-sm-12 col-xs-12" style="padding-right: 30px; float: right;">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style=" border: grey thin solid; padding: 0;" id="bordered_upload">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                            <!-- .png file -->
+                            <label class="control-label">Upload Photo </label>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                            <img [src]="edit_img_path" class="img img-responsive" style="width:50%" id="myphoto" />
+                            <!-- change event is fired for <input>,<select>, and <textarea> elements -->
+                            <!-- syntax: <input (change)="function($e)" -->
+                            <!-- get user input from the $event object -->
+                            <input type="file" id="input" (change)="change_photo($event)">
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center" style="margin-top: 20px;">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Category OC/BC/SC/ST :</label>
+                    <select class="form-control" formControlName="applicant_caste">
+                        <option value="" disabled>--Choose Caste--</option>
+                        <option value="O">OC</option>
+                        <option value="B">BC</option>
+                        <option value="C">SC</option>
+                        <option value="T">ST</option>
+                    </select>
+                    <div *ngIf="submitted && membershipForm.controls['applicant_caste'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_caste'].invalid">applicant_caste is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">PAN :</label>
+                    <input id="memb_pan_no" class="form-control" type="text" formControlName="applicant_pan_no">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_pan_no'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_pan_no'].errors['required']">applicant_pan_no is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_pan_no'].errors['pattern']">applicant_pan_no is
+                            invalid</div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Designation</label>
+                    <select class="form-control" formControlName="applicant_desig">
+                        <option value="" disabled>--Choose--</option>
+                        <option value="Worker">WORKER</option>
+                        <option value="Mini Worker">MINI WORKER</option>
+                        <option value="Helper">HELPER</option>
+                    </select>
+                    <div *ngIf="submitted && membershipForm.controls['applicant_desig'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_desig'].invalid">applicant_desig is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">District</label>
+                    <!-- change event is fired for <input>,<select>, and <textarea> elements -->
+                    <!-- syntax: <input (change)="function($e)" -->
+                    <select class="form-control" (change)="fetch_project($event)" formControlName="applicant_dist">
+                        <!-- change event is assigned here as when we select district project field event should be selected as per district choosen -->
+                        <option value="" disabled>--Select District--</option>
+                        <!-- to run th loop we used *ngFor. Here cascading is playing a role btw district,project and sector -->
+                        <option *ngFor="let a of district_array" value="{{a.district_code}}">
+                            {{a.district_desc}}
+                        </option>
+                    </select>
+                    <div *ngIf="submitted && membershipForm.controls['applicant_dist'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_dist'].invalid">applicant_dist is required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Project:</label>
+                    <!-- change event is fired for <input>,<select>, and <textarea> elements -->
+                    <!-- syntax: <input (change)="function($e)" >-->
+                    <select class="form-control" (change)="fetch_sectors($event)" formControlName="applicant_proj">
+                        <option value="" disabled>--Select Project--</option>
+                        <option *ngFor="let a of project_array" value="{{a.project_code}}">
+                            {{a.project_desc}}
+                        </option>
+
+                    </select>
+                    <div *ngIf="submitted && membershipForm.controls['applicant_proj'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_proj'].invalid">applicant_project is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Sector</label>
+                    <select class="form-control" formControlName="applicant_sector">
+                        <option value="" disabled>--Select sector--</option>
+                        <option *ngFor="let a of sector_array" value="{{a.sector_code}}">
+                            {{a.sector_desc}}
+                        </option>
+
+                    </select>
+                    <div *ngIf="submitted && membershipForm.controls['applicant_sector'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_sector'].invalid">applicant_sector is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Centre Code</label>
+                    <input id="centre_code" class="form-control" type="text" formControlName="applicant_centre_code">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_centre_code'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_centre_code'].errors['required']">centre code is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_centre_code'].errors['pattern']">centre code is
+                            invalid</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Centre Area</label>
+                    <input id="centre_area" class="form-control" type="text" formControlName="applicant_centre_area"
+                        minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_centre_area'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_centre_area'].errors['required']">centre area is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_centre_area'].errors['minlength']">centre area
+                            must
+                            be at least 3 characters</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+
+                    <label class="control-label"> Gender :</label>
+                    <select class="form-control" formControlName="applicant_gender">
+                        <option value="" disabled>--Choose--</option>
+                        <option value="M">MALE</option>
+                        <option value="F">FEMALE</option>
+                    </select>
+                    <div *ngIf="submitted && membershipForm.controls['applicant_gender'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_gender'].invalid">applicant_gender is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label"> Marital Status :</label>
+                    <select class="form-control" formControlName="applicant_marital_status">
+                        <option value="" disabled>--Choose--</option>
+                        <option value="M">MARRIED</option>
+                        <option value="U">UNMARRIED</option>
+                    </select>
+                    <div *ngIf="submitted && membershipForm.controls['applicant_marital_status'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_marital_status'].invalid">
+                            applicant_marital_status is
+                            required</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Bank AC No:</label>
+                    <input id="bnk_acc_no" class="form-control" type="text" formControlName="applicant_bnk_acc_no">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_bnk_acc_no'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_bnk_acc_no'].errors['required']">bank account no.
+                            is
+                            required</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">IFSC :</label>
+                    <input id="ifsc_code" class="form-control" type="text" formControlName="applicant_ifsc_code">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_ifsc_code'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_ifsc_code'].errors['required']">ifsc code is
+                            required
+                        </div>
+                        <div *ngIf="membershipForm.controls['applicant_ifsc_code'].errors['pattern']">ifsc code is
+                            invalid
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Name of the Bank</label>
+                    <input id="bank_name" class="form-control" type="text" formControlName="applicant_bank_name"
+                        minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_bank_name'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_bank_name'].errors['required']">bank name is
+                            required
+                        </div>
+                        <div *ngIf="membershipForm.controls['applicant_bank_name'].errors['minlength']">bank name must
+                            be at
+                            least 3 characters</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Name of the Branch</label>
+                    <input id="branch_name" class="form-control" type="text" formControlName="applicant_branch_name"
+                        minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_branch_name'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_branch_name'].errors['required']">branch name is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_branch_name'].errors['minlength']">branch name
+                            must
+                            be at least 3 characters</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">No. shares applied (@ Rs. 50)</label>
+                    <input id="no_of_shares" class="form-control" type="text" formControlName="applicant_no_of_shares">
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Installment Amount including Rs.50 (NRWF)</label>
+                    <input id="install_amt" class="form-control" type="text" formControlName="applicant_install_amt">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_install_amt'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_install_amt'].errors['required']">Installment
+                            amt. is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_install_amt'].errors['pattern']">Installment amt.
+                            is
+                            invalid</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Payment Details Rs.</label>
+                    <input id="pmnt_details" class="form-control" type="text" formControlName="applicant_pmnt_details">
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">Date of the Payment</label>
+                    <input id="dt_of_pmnt" class="form-control" type="date" formControlName="applicant_dt_of_pmnt"
+                        [max]="current_date_str">
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <label class="control-label">UTR No </label>
+                    <input id="utr_no" class="form-control" type="text" formControlName="applicant_utr_no">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_utr_no'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_utr_no'].errors['required']">utr no. is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <label>ADDRESS</label><br>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+
+                <label class="control-label">Permanent </label><br>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">Door No. :</label>
+                    <input id="door_no" class="form-control" type="text" formControlName="applicant_door_no"
+                        [(ngModel)]="p_door_no" (input)="copy_address()">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_door_no'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_door_no'].errors['required']">door no. is
+                            required
+                        </div>
+                        <div *ngIf="membershipForm.controls['applicant_door_no'].errors['minlength']">door no. must be
+                            at
+                            least 3 characters</div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">Landmark/ Street</label>
+                    <input id="landmark" class="form-control" type="text" formControlName="applicant_landmark"
+                        [(ngModel)]="p_landmark" (input)="copy_address()" minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_landmark'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_landmark'].errors['required']">landmark/street
+                            name
+                            is required</div>
+                        <div *ngIf="membershipForm.controls['applicant_landmark'].errors['minlength']">landmark/street
+                            name
+                            must be at least 3 characters</div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <label class="control-label">Village / Mandal</label>
+                    <input id="village_city" class="form-control" type="text" formControlName="applicant_village_city"
+                        [(ngModel)]="p_village_city" (input)="copy_address()" minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_village_city'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_village_city'].errors['required']">village/mandal
+                            name is required</div>
+                        <div *ngIf="membershipForm.controls['applicant_village_city'].errors['minlength']">
+                            village/mandal
+                            name must be at least 3 characters</div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">District</label>
+                    <input id="district" class="form-control" type="text" formControlName="applicant_district"
+                        [(ngModel)]="p_district" (input)="copy_address()" minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_district'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_district'].errors['required']">district name is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_district'].errors['minlength']">district name
+                            must be
+                            at least 3 characters</div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">Pincode</label>
+                    <input id="pincode" class="form-control" type="text" formControlName="applicant_pincode"
+                        [(ngModel)]="p_pincode" (input)="copy_address()" minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_pincode'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_pincode'].errors['required']">pincode no. is
+                            required
+                        </div>
+                        <div *ngIf="membershipForm.controls['applicant_pincode'].errors['pattern']">pincode no. is
+                            invalid
+                        </div>
+                        <div *ngIf="membershipForm.controls['applicant_pincode'].errors['minlength']">pincode no. must
+                            be at
+                            least 3 digits</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <label class="control-label">Temporary</label>
+                <label class="control-label" id="custom1">Same as Permanent <input type="checkbox"
+                        (change)="set_check_status()" [checked]="ischecked"></label>
+                <!--checked attribute is used for checkbox or radio button.It is boolean  -->
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">Door No.:</label>
+                    <input id="temp_door_no" class="form-control" type="text" formControlName="applicant_temp_door_no"
+                        [(ngModel)]="t_door_no" [readonly]="disable_fields">
+                    <!-- readonly attribute is a boolean attribute. readonly field cannot be modified -->
+                    <div *ngIf="submitted && membershipForm.controls['applicant_temp_door_no'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_temp_door_no'].errors['required']">door no. is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_temp_door_no'].errors['minlength']">door no. must
+                            be
+                            at least 3 characters</div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">Landmark/ Street</label>
+                    <input id="temp_landmark" class="form-control" type="text" formControlName="applicant_temp_landmark"
+                        [(ngModel)]="t_landmark" [readonly]="disable_fields" minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_temp_landmark'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_temp_landmark'].errors['required']">
+                            landmark/street
+                            name is required</div>
+                        <div *ngIf="membershipForm.controls['applicant_temp_landmark'].errors['minlength']">
+                            landmark/street
+                            name must be at least 3 characters</div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <label class="control-label">Village / Mandal</label>
+                    <input id="temp_village_city" class="form-control" type="text"
+                        formControlName="applicant_temp_village_city" [(ngModel)]="t_village_city"
+                        [readonly]="disable_fields" minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_temp_village_city'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_temp_village_city'].errors['required']">
+                            village/mandal name is required</div>
+                        <div *ngIf="membershipForm.controls['applicant_temp_village_city'].errors['minlength']">
+                            village/mandal name must be at least 3 characters</div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label">District</label>
+                    <input id="temp_district" class="form-control" type="text" formControlName="applicant_temp_district"
+                        [(ngModel)]="t_district" [readonly]="disable_fields" minlength="3">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_temp_district'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_temp_district'].errors['required']">district name
+                            is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_temp_district'].errors['minlength']">district
+                            name
+                            must be at least 3 characters</div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <label class="control-label">Pincode</label>
+                    <input id="temp_pincode" class="form-control" type="text" formControlName="applicant_temp_pincode"
+                        [(ngModel)]="t_pincode" [readonly]="disable_fields">
+                    <div *ngIf="submitted && membershipForm.controls['applicant_temp_pincode'].errors"
+                        class="alert alert-danger" style="width:100%">
+                        <div *ngIf="membershipForm.controls['applicant_temp_pincode'].errors['required']">pincode no. is
+                            required</div>
+                        <div *ngIf="membershipForm.controls['applicant_temp_pincode'].errors['pattern']">pincode no. is
+                            invalid</div>
+                        <div *ngIf="membershipForm.controls['applicant_temp_pincode'].errors['minlength']">pincode no.
+                            must
+                            be at least 3 digits</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <h4><u>
+                            <b>Nominee Declaration</b>
+                        </u></h4>
+                    <label>No. Nominees &nbsp; <input type="radio" name="nominee" value='one' (click)="check_it(1)"
+                            [checked]="show_one">One &nbsp;<input type="radio" name="nominee" value='two'
+                            (click)="check_it(2)" [checked]="show_two">Two</label>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12" *ngIf="show_one">
+                    <h4 style="margin-top: 10px;">1st Nominee </h4>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label">Name of the Nominee</label>
+                        <input id="nominee_name" class="form-control" type="text" formControlName="nominee_name1"
+                            minlength="3">
+                        <div *ngIf="submitted && membershipForm.controls['nominee_name1'].errors"
+                            class="alert alert-danger" style="width:100%">
+                            <div *ngIf="membershipForm.controls['nominee_name1'].errors['required']">nominee name is
+                                required</div>
+                            <div *ngIf="membershipForm.controls['nominee_name1'].errors['minlength']">nominee name must
+                                be
+                                at least 3 characters</div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label">Relationship with Member</label>
+                        <input id="rel_with_memb" class="form-control" type="text" formControlName="rel_with_memb1"
+                            minlength="3">
+                        <div *ngIf="submitted && membershipForm.controls['rel_with_memb1'].errors"
+                            class="alert alert-danger" style="width:100%">
+                            <div *ngIf="membershipForm.controls['rel_with_memb1'].errors['required']">field is required
+                            </div>
+                            <div *ngIf="membershipForm.controls['rel_with_memb1'].errors['minlength']">field name must
+                                be at
+                                least 3 characters</div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label">Nominee Aadhar Number</label>
+                        <input id="nominee_aadhno" class="form-control" type="text" formControlName="nominee_aadhno1">
+                        <div *ngIf="submitted && membershipForm.controls['nominee_aadhno1'].errors"
+                            class="alert alert-danger" style="width:100%">
+                            <div *ngIf="membershipForm.controls['nominee_aadhno1'].errors['required']">aadhar number is
+                                required</div>
+                            <div *ngIf="membershipForm.controls['nominee_aadhno1'].errors['pattern']">aadhar number is
+                                invalid</div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6 col-sm-12 col-xs-12" *ngIf="show_two">
+                    <h4 style="margin-top: 10px;">2st Nominee </h4>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label">Name of the Nominee</label>
+                        <input id="nominee_name" class="form-control" type="text" formControlName="nominee_name2"
+                            minlength="3">
+                        <div *ngIf="submitted && membershipForm.controls['nominee_name2'].errors"
+                            class="alert alert-danger" style="width:100%">
+                            <div *ngIf="membershipForm.controls['nominee_name2'].errors['required']">nominee name is
+                                required</div>
+                            <div *ngIf="membershipForm.controls['nominee_name2'].errors['minlength']">nominee name must
+                                be
+                                at least 3 characters</div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label">Relationship with Member</label>
+                        <input id="rel_with_memb" class="form-control" type="text" formControlName="rel_with_memb2"
+                            minlength="3">
+                        <div *ngIf="submitted && membershipForm.controls['rel_with_memb2'].errors"
+                            class="alert alert-danger" style="width:100%">
+                            <div *ngIf="membershipForm.controls['rel_with_memb2'].errors['required']">field is required
+                            </div>
+                            <div *ngIf="membershipForm.controls['rel_with_memb2'].errors['minlength']">field name must
+                                be at
+                                least 3 characters</div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label">Nominee Aadhar Number</label>
+                        <input id="nominee_aadhno" class="form-control" type="text" formControlName="nominee_aadhno2">
+                        <div *ngIf="submitted && membershipForm.controls['nominee_aadhno2'].errors"
+                            class="alert alert-danger" style="width:100%">
+                            <div *ngIf="membershipForm.controls['nominee_aadhno2'].errors['required']">aadhar number is
+                                required</div>
+                            <div *ngIf="membershipForm.controls['nominee_aadhno2'].errors['pattern']">aadhar number is
+                                invalid</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3" style="margin-left:43%;margin-right:33%;width:33%;margin-top:2%" id="button_panel">
+                <button class="btn btn-success" type="submit" style="margin:3px">Save</button>
+                &nbsp; <a [disabled]="enable_download==false" class="btn btn-danger" style="margin:3px"
+                    (click)="dowlodaPDF()">Download</a>
+
+            </div>
+        </div>
+    </form>
+
+    <canvas id="tiffCanvasContainer" #tiffCanvasContainer></canvas>
+</div>
